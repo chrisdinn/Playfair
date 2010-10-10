@@ -1,0 +1,3 @@
+=Playfair
+
+Playfair is a Ruby data visualization library that seeks to make graphing and charting easy. 
