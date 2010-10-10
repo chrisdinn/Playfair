@@ -1,3 +1,18 @@
 =Playfair
 
 Playfair is a Ruby data visualization library that seeks to make graphing and charting easy. 
+
+==Pie Charts
+
+To create a pie chart and add data:
+
+    pie_chart = Playfair::PieChart.new
+    pie_chart.add_data do |data|
+      data.add 90, "Firefox"
+      data.add 55, "IE"
+    end
+		
+Render that pie chart to a Google Chart API pie chart url
+
+    pie_chart.render
+    => "http://chart.apis.google.com/chart?cht=p&chd=t:90,55&chl=Firefox|IE&chs=280x200"
