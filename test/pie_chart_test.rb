@@ -23,9 +23,21 @@ class PieChartTest < Test::Unit::TestCase
       data.add 55, "IE"
     end
     
-    expected_chart = "http://chart.apis.google.com/chart?cht=p&chd=t:90,55&chl=Firefox|IE&chs=280x200"
+    expected_chart = "http://chart.apis.google.com/chart?cht=p&chd=t:90,55&chl=Firefox|IE&chs=330x200"
     
     assert_equal expected_chart, pie.render
   end
   
+  def test_render_with_title
+    pie = Playfair::PieChart.new
+    pie.title = "Internet users"
+    pie.add_data do |data|
+      data.add 90, "Firefox users"
+      data.add 55, "IE users"
+    end
+    
+    expected_chart = "http://chart.apis.google.com/chart?cht=p&chd=t:90,55&chl=Firefox+users|IE+users&chs=330x200&chtt=Internet+users"
+    
+    assert_equal expected_chart, pie.render
+  end
 end

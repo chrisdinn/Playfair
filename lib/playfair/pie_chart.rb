@@ -1,5 +1,8 @@
+require 'cgi'
+
 module Playfair
   class PieChart
+    attr_accessor :title
     
     def self.create
       chart = new
@@ -19,10 +22,12 @@ module Playfair
       @data.dup
     end
     
-    def render(options={:width => 280, :height => 200})
+    def render(options={:width => 330, :height => 200})
       values = @data.collect{|d| d.value }
-      labels = @data.collect{|d| d.label }
-      "http://chart.apis.google.com/chart?cht=p&chd=t:#{values.join(',')}&chl=#{labels.join('|')}&chs=280x200"
+      labels = @data.collect{|d| CGI.escape(d.label) }
+      rendered_chart = "http://chart.apis.google.com/chart?cht=p&chd=t:#{values.join(',')}&chl=#{labels.join('|')}&chs=#{options[:width]}x#{options[:height]}"
+      rendered_chart << "&chtt=#{CGI.escape(title)}" if title
+      rendered_chart
     end
   end
 end
