@@ -15,4 +15,19 @@ To create a pie chart and add data:
 Render that pie chart to a Google Chart API pie chart url
 
     pie_chart.render
-    => "http://chart.apis.google.com/chart?cht=p&chd=t:90,55&chl=Firefox|IE&chs=280x200"
+    => "http://chart.apis.google.com/chart?cht=bvs&chd=t:90,55&chxt=x,y&chxl=0:|Firefox|IE&chs=330x200"
+
+==Bar Charts
+
+Create bar chart like a pie chart:
+
+    bar_chart = Playfair::BarChart.new
+    bar_chart.add_data do |data|
+      data.add 90, "Firefox"
+      data.add 55, "IE"
+    end
+		
+Render that chart to a Google Chart API bar chart url
+
+    bar_chart.render
+    => "http://chart.apis.google.com/chart?cht=bvs&chd=t:90,55&chxt=x,y&chxl=0:|Firefox|IE&chs=330x200"
