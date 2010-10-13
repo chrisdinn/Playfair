@@ -2,8 +2,8 @@ module Playfair
   class Chart
     attr_accessor :title
 
-    def add_data
-      yield @data
+    def add_data(&block)
+      @data.instance_eval &block
     end
     
     def data
