@@ -19,7 +19,7 @@ Render that pie chart to a Google Chart API pie chart url
 
 ==Bar Charts
 
-Create bar chart like a pie chart:
+Create a bar chart like a pie chart:
 
     bar_chart = Playfair::BarChart.new
     bar_chart.data do |data|
