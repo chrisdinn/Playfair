@@ -1,7 +1,7 @@
 module Playfair 
   class ValueSet < Array
     
-    def add(value,label="")
+    def add_value(value,label="")
       self << Value.new(value, label)
     end
     

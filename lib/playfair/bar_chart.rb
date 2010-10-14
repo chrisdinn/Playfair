@@ -6,7 +6,7 @@ module Playfair
     end
     
     def value(*args)
-      @data.add *args
+      @data.add_value *args
     end
     
     def render(options={:width => 330, :height => 200})
