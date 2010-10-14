@@ -5,6 +5,10 @@ module Playfair
       @data = ValueSet.new
     end
     
+    def value(*args)
+      @data.add *args
+    end
+    
     def render(options={:width => 330, :height => 200})
       values = @data.collect{|d| d.value }
       labels = @data.collect{|d| CGI.escape(d.label) }

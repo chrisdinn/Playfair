@@ -7,9 +7,9 @@ Playfair is a Ruby data visualization library that seeks to make graphing and ch
 To create a pie chart and add data:
 
     pie_chart = Playfair::PieChart.new
-    pie_chart.add_data do |data|
-      data.add 90, "Firefox"
-      data.add 55, "IE"
+    pie_chart.data do
+      value 90, "Firefox"
+      value 55, "IE"
     end
 		
 Render that pie chart to a Google Chart API pie chart url
@@ -22,9 +22,9 @@ Render that pie chart to a Google Chart API pie chart url
 Create bar chart like a pie chart:
 
     bar_chart = Playfair::BarChart.new
-    bar_chart.add_data do |data|
-      data.add 90, "Firefox"
-      data.add 55, "IE"
+    bar_chart.data do |data|
+      value 90, "Firefox"
+      value 55, "IE"
     end
 		
 Render that chart to a Google Chart API bar chart url

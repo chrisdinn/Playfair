@@ -5,9 +5,9 @@ class BarChartTest < Test::Unit::TestCase
   def test_add_data
     bar = Playfair::BarChart.new
     
-    bar.add_data do
-      add 2300, "Firefox"
-      add 3150, "IE"
+    bar.data do
+      value 2300, "Firefox"
+      value 3150, "IE"
     end
     
     assert_equal 2, bar.data.size
@@ -18,9 +18,9 @@ class BarChartTest < Test::Unit::TestCase
   def test_render
     bar = Playfair::BarChart.new
     
-    bar.add_data do
-      add 90, "Firefox"
-      add 55, "IE"
+    bar.data do
+      value 90, "Firefox"
+      value 55, "IE"
     end
     
     expected_chart = "http://chart.apis.google.com/chart?cht=bvs&chd=t:90,55&chxt=x,y&chxl=0:|Firefox|IE&chs=330x200"
@@ -31,9 +31,9 @@ class BarChartTest < Test::Unit::TestCase
   def test_render_with_title
     bar = Playfair::BarChart.new
     bar.title = "Internet users"
-    bar.add_data do
-      add 90, "Firefox users"
-      add 55, "IE users"
+    bar.data do
+      value 90, "Firefox users"
+      value 55, "IE users"
     end
     
     expected_chart = "http://chart.apis.google.com/chart?cht=bvs&chd=t:90,55&chxt=x,y&chxl=0:|Firefox+users|IE+users&chs=330x200&chtt=Internet+users"
