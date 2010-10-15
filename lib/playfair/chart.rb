@@ -2,18 +2,15 @@ module Playfair
   class Chart < Array
     
     attr_accessor :title
-    attr_reader :renderer
+    attr_accessor :renderer
     
-    def initialize(chart_renderer=GoogleChartRenderer)
-      @renderer = chart_renderer
+    def initialize(&block)
+      @renderer = GoogleChartRenderer
+      instance_eval &block
     end
 
     def value(value,label="")
       push Value.new(value,label)
-    end
-        
-    def data(&block)
-      instance_eval &block
     end
     
     def values

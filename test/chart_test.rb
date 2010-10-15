@@ -3,9 +3,7 @@ require 'test_helper'
 class ChartTest < Test::Unit::TestCase
   
   def test_add_data
-    chart = Playfair::Chart.new
-
-    chart.data do
+    chart = Playfair::Chart.new do
       value 2300, "Firefox"
       value 3150, "IE"
     end
@@ -16,9 +14,7 @@ class ChartTest < Test::Unit::TestCase
   end
   
   def test_add_single_value
-    chart = Playfair::Chart.new
-    
-    chart.data do
+    chart = Playfair::Chart.new do
       value 100
     end
     
@@ -27,9 +23,7 @@ class ChartTest < Test::Unit::TestCase
   end
   
   def test_add_single_value_with_label
-    chart = Playfair::Chart.new
-    
-    chart.data do
+    chart = Playfair::Chart.new do
       value 100, "One hundred"
     end
     
@@ -37,9 +31,7 @@ class ChartTest < Test::Unit::TestCase
   end
   
   def test_values
-    chart = Playfair::Chart.new
-    
-    chart.data do
+    chart = Playfair::Chart.new do
       value 100, "One hundred"
       value 200, "Two hundred"
     end

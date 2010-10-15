@@ -9,8 +9,7 @@ chart or a pie chart. However, before you render them, charts are just an organi
 
 Create a chart like this:
 
-    chart = Playfair::Chart.new
-    chart.data do
+    chart = Playfair::Chart.new do
       value 90, "Firefox"
       value 55, "IE"
     end
@@ -38,15 +37,14 @@ Render to a Google Chart API bar chart url
 
 You can create a simple line chart, too.
 
-    chart = Playfair::Chart.new
-    chart.title = "Internet users"
-    chart.data do
+    chart = Playfair::Chart.new do
       value 90, "5am"
       value 55, "10am"
       value 77, "3pm"
       value 65, "9pm"
       value 74, "1am"
     end
+    chart.title = "Internet users"
 
     chart.render :line_chart
     => "http://chart.apis.google.com/chart?cht=lc&chd=t:90,55,77,65,74&chxt=x,y&chxl=0:|5am|10am|3pm|9pm..."
