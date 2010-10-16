@@ -2,7 +2,9 @@
 
 Playfair is a Ruby data visualization library that seeks to make graphing and charting easy. 
 
-==Creating a chart
+== Usage
+
+===Creating a chart
 
 First things first: create a chart. Once created, you can render it into a bar chart, a line 
 chart or a pie chart. However, before you render them, charts are just an organized set of values.
@@ -14,26 +16,26 @@ Create a chart like this:
       value 55, "IE"
     end
 
-==Rendering
+===Rendering
 
 By default, Playfair uses a lean and mean Google Charts API (http://code.google.com/apis/chart/) renderer.
 It returns a url pointing to an image of your data, charted.
 
-===Pie Chart
+====Pie Chart
 		
 Render that chart to a Google Chart API pie chart url
 
     chart.render :pie_chart
     => "http://chart.apis.google.com/chart?cht=bvs&chd=t:90,55&chxt=x,y&chxl=0:|Firefox|IE&chs=330x200"
 
-===Bar Chart
+====Bar Chart
 
 Render to a Google Chart API bar chart url
 
     chart.render :bar_chart
     => "http://chart.apis.google.com/chart?cht=bvs&chd=t:90,55&chxt=x,y&chxl=0:|Firefox|IE&chs=330x200"
 
-===Line Chart
+====Line Chart
 
 You can create a simple line chart, too.
 
@@ -49,3 +51,17 @@ You can create a simple line chart, too.
     chart.render :line_chart
     => "http://chart.apis.google.com/chart?cht=lc&chd=t:90,55,77,65,74&chxt=x,y&chxl=0:|5am|10am|3pm|9pm..."
 
+====Chart size
+
+You can render your chart any size you want.
+
+    chart.render :bar_chart, :width => 500, :height => 500
+    => "http://chart.apis.google.com/chart?cht=bvs&chd=t:90,55&chxt=x,y&chxl=0:|Firefox|IE&chs=500x500"
+
+== Who?
+
+Between 1786 and 1801 William Playfair (http://en.wikipedia.org/wiki/William_Playfair) invented the Bar, Line,
+and Pie charts. Pretty wicked. 
+
+For a more modern take on charting, read Edward Tufte (http://en.wikipedia.org/wiki/Edward_Tufte). My 
+favourite is The Visual Display of Quantitative Information (http://www.edwardtufte.com/tufte/books_vdqi).
