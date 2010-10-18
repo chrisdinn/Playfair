@@ -18,37 +18,64 @@ module Playfair
     end
     
     render :bar_chart do
-      doc = Prawn::Document.new(:page_size => [width, height], :margin => 0)
-      x_position = left_margin + gutter + ((chart_width - gutter)%values.size)/2
-      draw_title(doc) if title
+      draw_chart do |doc|
+        x_position = starting_x_position
       
-      doc.font_size font_size
-      doc.line_width 1.2
-      
-      values.each_with_index do |value, i|
-        # Draw bar
-        doc.stroke_color stroke_color
-        doc.fill_color color(i)
-        bar_height = height_for_bar(value, values.max)
-        doc.fill_and_stroke_rounded_rectangle [x_position, bar_height + bottom_margin],
-                                              bar_width, bar_height, 2
+        values.each_with_index do |value, i|
+          # Draw bar
+          doc.fill_color color(i)
+          bar_height = height_for_value(value, values.max)
+          doc.fill_and_stroke_rounded_rectangle [x_position, bar_height + bottom_margin],
+                                                bar_width, bar_height, 2
         
-        # Draw label
-        doc.fill_color text_color
-        text_with_shadow  doc,
-                          labels[i], 
-                          :at => [x_position, margin + font_size], 
-                          :width => bar_width, 
-                          :align => :center
+          # Draw label
+          doc.fill_color text_color
+          text_with_shadow  doc, labels[i], 
+                            :align => :center,
+                            :at => [x_position, margin + font_size], 
+                            :width => bar_width, 
+                            :overflow => :shrink_to_fit
         
-        x_position += bar_width + gutter
+          x_position += bar_width + gutter
+        end
       end
-
-      draw_axes(doc)
-
-      doc.render_file "examples/test.pdf"
     end
-  
+    
+    render :line_chart do
+      draw_chart do |doc|
+        x_position = starting_x_position
+        values.each_with_index do |value, i|
+          # Draw line
+          if values[i + 1]
+            doc.stroke_line   x_position,
+                              height_for_value(value, values.max) + bottom_margin,
+                              x_position + point_interval,
+                              height_for_value(values[i + 1], values.max) + bottom_margin
+            x_position += point_interval
+          end
+        end
+        
+        # Draw points
+        x_position = starting_x_position
+        values.each do |value|
+          doc.fill_circle_at [x_position, height_for_value(value, values.max) + bottom_margin], :radius => 3
+          x_position += point_interval
+        end
+        
+        # Draw labels
+        x_position = starting_x_position
+        values.each_with_index do |value, i|
+          doc.fill_color text_color
+          text_with_shadow  doc, labels[i], 
+                            :align => :center,
+                            :at => [x_position - point_interval/2, margin + font_size], 
+                            :width => point_interval, 
+                            :overflow => :shrink_to_fit
+          x_position += point_interval
+        end
+      end
+    end
+    
     private
     
     def chart_width
@@ -75,13 +102,33 @@ module Playfair
       margin + font_size + 3
     end
     
+    def starting_x_position
+      left_margin + gutter + ((chart_width - gutter)%values.size)/2
+    end
+    
     def bar_width
       ((chart_width - gutter)/values.size) - gutter
     end
     
+    def point_interval
+      (chart_width - gutter*2)/(values.size - 1)
+    end
+    
+    def draw_chart
+      doc = Prawn::Document.new(:page_size => [width, height], :margin => 0)
+      doc.line_width 1.2
+      doc.stroke_color stroke_color
+      
+      draw_title(doc) if title
+      draw_y_axis(doc)
+      yield(doc)
+      draw_x_axis(doc)
+      
+      doc.render_file "examples/test.pdf"
+    end
+    
     def draw_title(doc)
-      doc.fill_color text_color
-      doc.font_size font_size * 1.35
+      doc.font_size font_size * 1.6
       text_with_shadow  doc, 
                         title, 
                         :at => [left_margin, height - margin], 
@@ -89,33 +136,38 @@ module Playfair
                         :align => :center, 
                         :style => :bold, 
                         :single_line => true
+      doc.font_size font_size
     end
     
-    def draw_axes(doc)
-      doc.stroke_color stroke_color
+    def draw_x_axis(doc)
       doc.stroke_line [left_margin, bottom_margin], [left_margin + chart_width, bottom_margin]
-      doc.stroke_line [left_margin, chart_height + bottom_margin], [left_margin, bottom_margin]
-      
-      # y-axis labels
-      doc.font_size font_size
-      doc.fill_color text_color
-      
+      #doc.stroke_line [left_margin, chart_height + bottom_margin], [left_margin, bottom_margin]
+    end
+    
+    def draw_y_axis(doc)      
       draw_y_axis_label   doc, "0",
-                          [margin,bottom_margin+font_size/2]
+                          [margin,bottom_margin+font_size/2.5]
+      
+      max_line_height = highest_chart_point + bottom_margin
       draw_y_axis_label   doc, values.max.to_s,
-                          [margin, highest_chart_point + bottom_margin + font_size/2]
+                          [margin, max_line_height + font_size/2.5]
+              
+      halfway_line_height = highest_chart_point/2 + bottom_margin
       halfway_point = values.max / 2
       draw_y_axis_label   doc, halfway_point.to_s,
-                          [margin, highest_chart_point/2 + bottom_margin + font_size/2]
+                          [margin, halfway_line_height + font_size/2.5]
+      
+      doc.transparent(0.3) do  
+        doc.dash 2, :space => 1                  
+        doc.stroke_line     [left_margin, max_line_height], [left_margin + chart_width, max_line_height]
+        doc.stroke_line     [left_margin, halfway_line_height], [left_margin + chart_width, halfway_line_height] 
+        doc.undash
+      end                   
     end
     
-    def height_for_bar(value, max_value)
+    def height_for_value(value, max_value)
       ratio = highest_chart_point/max_value.to_f
       (value * ratio).to_i
-    end
-    
-    def color(index)
-      COLORS[index % COLORS.size]
     end
     
     def highest_chart_point
@@ -138,6 +190,10 @@ module Playfair
         doc.text_box text, options.merge(:at => [at.first, at.last + doc.font_size/22.0])
       end     
       doc.text_box text, options
+    end
+    
+    def color(index)
+      COLORS[index % COLORS.size]
     end
   end
 end
