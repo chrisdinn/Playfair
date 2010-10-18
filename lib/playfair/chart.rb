@@ -15,9 +15,13 @@ module Playfair
     
     def values
       collect { |value| value.value }
+    end  
+    
+    def labels
+      collect { |value| value.label }
     end
     
-    def render(type, options={})
+    def render(type, options={})  
       renderer.new(self, options).render(type)
     end
   end

@@ -31,7 +31,7 @@ module Playfair
     end
     
     def title
-      CGI.escape(source.title) if source.title
+      CGI.escape(super) if super
     end
     
   end

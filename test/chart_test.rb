@@ -38,4 +38,13 @@ class ChartTest < Test::Unit::TestCase
     
     assert_equal chart.values, [100, 200]
   end
+  
+  def test_labels
+    chart = Playfair::Chart.new do
+      value 100, "One hundred"
+      value 200, "Two hundred"
+    end
+    
+    assert_equal chart.labels, ["One hundred", "Two hundred"]
+  end
 end
