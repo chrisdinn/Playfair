@@ -10,8 +10,9 @@ chart = Playfair::Chart.new do
   value 45, "3pm"
   value 74, "6pm"
   value 80, "9pm"
+  value 111, "12am"
 end
 chart.renderer = Playfair::PDFRenderer
 chart.title = "Internet Users by Time of Day"
 
-chart.render :line_chart
+chart.render :bar_chart, :to => "examples/test_chart.pdf"
